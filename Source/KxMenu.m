@@ -44,7 +44,17 @@ const CGFloat kArrowSize = 12.f;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+@class KxMenuView;
+@interface KxMenu()
+
+@property (nonatomic, strong) KxMenuView *menuView;
+
+@end
+
 @interface KxMenuView : UIView
+
+@property (nonatomic, strong) NSArray *menuItems;
+
 @end
 
 @interface KxMenuOverlay : UIView
@@ -157,7 +167,6 @@ typedef enum {
     KxMenuViewArrowDirection    _arrowDirection;
     CGFloat                     _arrowPosition;
     UIView                      *_contentView;
-    NSArray                     *_menuItems;
 }
 
 - (id)init
@@ -316,6 +325,12 @@ typedef enum {
              menuItems:(NSArray *)menuItems
 {
     _menuItems = menuItems;
+    
+    if ([KxMenu menuItemForegroundColor]) {
+        for (KxMenuItem *item in _menuItems) {
+            item.foreColor = [KxMenu menuItemForegroundColor];
+        }
+    }
     
     _contentView = [self mkContentView];
     [self addSubview:_contentView];
@@ -628,10 +643,16 @@ typedef enum {
     CGFloat R1 = 0.040, G1 = 0.040, B1 = 0.040;
     
     UIColor *tintColor = [KxMenu tintColor];
+    UIColor *endColor = [KxMenu endColor];
+    
     if (tintColor) {
-        
         CGFloat a;
         [tintColor getRed:&R0 green:&G0 blue:&B0 alpha:&a];
+    }
+    
+    if (endColor) {
+        CGFloat a;
+        [endColor getRed:&R1 green:&G1 blue:&B1 alpha:&a];
     }
     
     CGFloat X0 = frame.origin.x;
@@ -766,11 +787,11 @@ typedef enum {
 
 static KxMenu *gMenu;
 static UIColor *gTintColor;
+static UIColor *gEndColor;
+static UIColor *gMenuItemForegroundColor;
 static UIFont *gTitleFont;
 
 @implementation KxMenu {
-    
-    KxMenuView *_menuView;
     BOOL        _observing;
 }
 
@@ -861,6 +882,20 @@ static UIFont *gTitleFont;
     [[self sharedMenu] dismissMenu];
 }
 
+#pragma mark - Colors
+
++ (void)setMenuItemsForegroundColor:(UIColor *)foregroundColor
+{
+    if (foregroundColor != gMenuItemForegroundColor) {
+        gMenuItemForegroundColor = foregroundColor;
+    }
+}
+
++ (UIColor *)menuItemForegroundColor
+{
+    return gMenuItemForegroundColor;
+}
+
 + (UIColor *) tintColor
 {
     return gTintColor;
@@ -872,6 +907,20 @@ static UIFont *gTitleFont;
         gTintColor = tintColor;
     }
 }
+
++ (UIColor *)endColor
+{
+    return gEndColor;
+}
+
++ (void)setEndColor:(UIColor *)endColor
+{
+    if (endColor != gEndColor) {
+        gEndColor = endColor;
+    }
+}
+
+#pragma mark -
 
 + (UIFont *) titleFont
 {

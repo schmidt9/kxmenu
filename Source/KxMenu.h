@@ -58,8 +58,14 @@
 
 + (void) dismissMenu;
 
-+ (UIColor *) tintColor;
++ (void) setMenuItemsForegroundColor:(UIColor *)foregroundColor;
++ (UIColor *)menuItemForegroundColor;
+
++ (UIColor *) tintColor; // aka start color
 + (void) setTintColor: (UIColor *) tintColor;
+
++ (UIColor *) endColor;
++ (void) setEndColor:(UIColor *)endColor;
 
 + (UIFont *) titleFont;
 + (void) setTitleFont: (UIFont *) titleFont;
