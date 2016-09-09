@@ -67,6 +67,9 @@
 + (UIColor *) endColor;
 + (void) setEndColor:(UIColor *)endColor;
 
++ (UIColor *) shadowColor;
++ (void) setShadowColor:(UIColor *)shadowColor;
+
 + (UIFont *) titleFont;
 + (void) setTitleFont: (UIFont *) titleFont;
 

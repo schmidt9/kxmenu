@@ -181,6 +181,11 @@ typedef enum {
         self.layer.shadowOpacity = 0.5;
         self.layer.shadowOffset = CGSizeMake(2, 2);
         self.layer.shadowRadius = 2;
+        
+        if ([KxMenu shadowColor]) {
+            self.layer.shadowOpacity = 1.0;
+            self.layer.shadowColor = [KxMenu shadowColor].CGColor;
+        }
     }
     
     return self;
@@ -788,6 +793,7 @@ typedef enum {
 static KxMenu *gMenu;
 static UIColor *gTintColor;
 static UIColor *gEndColor;
+static UIColor *gShadowColor;
 static UIColor *gMenuItemForegroundColor;
 static UIFont *gTitleFont;
 
@@ -917,6 +923,17 @@ static UIFont *gTitleFont;
 {
     if (endColor != gEndColor) {
         gEndColor = endColor;
+    }
+}
+
++ (UIColor *) shadowColor
+{
+    return gShadowColor;
+}
++ (void) setShadowColor:(UIColor *)shadowColor
+{
+    if (shadowColor != gShadowColor) {
+        gShadowColor = shadowColor;
     }
 }
 
